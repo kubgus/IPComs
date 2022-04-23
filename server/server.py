@@ -1,14 +1,21 @@
 import socket
 import select
+import configparser
+
+# IMPORTANT:
+# Set your working directory to server/ before running this
+
+config = configparser.ConfigParser()
+config.read("config.cfg")
 
 HEADER_LENGTH = 64
-IP = "127.0.0.1"
-PORT = 1234
+IP = config.get("HOST", "IP")
+PORT = config.get("HOST", "PORT")
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-server_socket.bind((IP, PORT))
+server_socket.bind((IP, int(PORT)))
 
 server_socket.listen()
 
